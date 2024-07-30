@@ -3,7 +3,7 @@
 
 If you have watched [How i met your mother](https://www.imdb.com/title/tt0460649/), you should have watched the slapsgiving episode.
 
-<video src="https://youtu.be/jq2e6VQOMPs?si=ItTYmgYPYfBeAG_Q" width="600" controls autoplay />
+<iframe width="560" height="315" src="https://www.youtube.com/embed/jq2e6VQOMPs?si=B_8-_GYZqlF0SMHD" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 Try deploying with railways (web app only)
 [Watch the countdown?]()
