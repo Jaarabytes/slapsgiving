@@ -1,102 +1,103 @@
 <script>
 	import { spring } from 'svelte/motion';
+  import { onMount } from 'svelte';
 
-	let count = 0;
 
-	const displayed_count = spring();
-	$: displayed_count.set(count);
-	$: offset = modulo($displayed_count, 1);
+	let days = 0;
+	let hours = 0;
+	let minutes = 0;
+	let seconds = 0;
 
-	function modulo(n, m) {
-		// handle negative numbers
-		return ((n % m) + m) % m;
-	}
+
+  const getThanksGivingDate = () => {
+    const now = new Date();
+    const year = now.getFullYear()
+    // set the date to November 1st 
+    const thanksgiving = new Date(year, 10, 1)
+    thanksgiving.setDate(thanksgiving.getDate() + ((11 - thanksgiving.getDay()) % 7) + 21)
+    // shit goes down at 9 pm
+    thanksgiving.setHours(21,0,0,0);
+    if ( now > thanksgiving ) {
+      thanksgiving.setFullYear(year + 1);
+      thanksgiving.setDate(thanksgiving.getDate() + (( 11 - thanksgiving.getDay()) % 7 ) + 21)
+    }
+    return thanksgiving;
+  }
+
+  const updateCountdown = () => {
+    const now = new Date();
+    const thanksgiving = getThanksGivingDate();
+    const timeDifference = thanksgiving - now;
+
+    days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+    hours = Math.floor((timeDifference / (1000 * 60 * 60)) % 24)
+    minutes = Math.floor((timeDifference / 1000 / 60) % 60 );
+    seconds = Math.floor((timeDifference / 1000) % 60);
+  }
+
+  // modern day useEffect
+  onMount(() => { 
+    // runs immediately this page is mounted on the DOM 
+    updateCountdown();
+    // updates every second 
+    const interval = setInterval(updateCountdown, 1000);
+
+    return () => clearInterval(interval);
+  })
 </script>
 
-<div class="counter">
-	<button on:click={() => (count -= 1)} aria-label="Decrease the counter by one">
-		<svg aria-hidden="true" viewBox="0 0 1 1">
-			<path d="M0,0.5 L1,0.5" />
-		</svg>
-	</button>
-
-	<div class="counter-viewport">
-		<div class="counter-digits" style="transform: translate(0, {100 * offset}%)">
-			<strong class="hidden" aria-hidden="true">{Math.floor($displayed_count + 1)}</strong>
-			<strong>{Math.floor($displayed_count)}</strong>
-		</div>
-	</div>
-
-	<button on:click={() => (count += 1)} aria-label="Increase the counter by one">
-		<svg aria-hidden="true" viewBox="0 0 1 1">
-			<path d="M0,0.5 L1,0.5 M0.5,0 L0.5,1" />
-		</svg>
-	</button>
+<div class="countdown">
+			<strong>{days}</strong>:
+			<strong>{hours}</strong>:
+			<strong>{minutes}</strong>:
+			<strong>{seconds}</strong>
 </div>
 
 <style>
-	.counter {
-		display: flex;
-		border-top: 1px solid rgba(0, 0, 0, 0.1);
-		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-		margin: 1rem 0;
-	}
+ 
+strong {
+  color: red;
+  font-weight: bold; /* corrected from 'font: extrabold' */
+  margin-inline: 12px;
+}
 
-	.counter button {
-		width: 2em;
-		padding: 0;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		border: 0;
-		background-color: transparent;
-		touch-action: manipulation;
-		font-size: 2rem;
-	}
+.countdown {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
 
-	.counter button:hover {
-		background-color: var(--color-bg-1);
-	}
+/* Base font size for larger screens */
+.countdown strong {
+  font-size: 4em;
+}
 
-	svg {
-		width: 25%;
-		height: 25%;
-	}
+/* Adjust font size for smaller screens */
+@media (max-width: 1200px) {
+  .countdown strong {
+    font-size: 3em;
+  }
+}
 
-	path {
-		vector-effect: non-scaling-stroke;
-		stroke-width: 2px;
-		stroke: #444;
-	}
+@media (max-width: 992px) {
+  .countdown strong {
+    font-size: 2.5em;
+  }
+}
 
-	.counter-viewport {
-		width: 8em;
-		height: 4em;
-		overflow: hidden;
-		text-align: center;
-		position: relative;
-	}
+@media (max-width: 768px) {
+  .countdown strong {
+    font-size: 2em;
+  }
+}
 
-	.counter-viewport strong {
-		position: absolute;
-		display: flex;
-		width: 100%;
-		height: 100%;
-		font-weight: 400;
-		color: var(--color-theme-1);
-		font-size: 4rem;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.counter-digits {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-	}
-
-	.hidden {
-		top: -100%;
-		user-select: none;
-	}
+@media (max-width: 576px) {
+  .countdown strong {
+    font-size: 1.5em;
+  }
+}
 </style>
