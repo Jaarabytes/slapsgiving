@@ -14,4 +14,4 @@ RUN pnpm run build
 
 EXPOSE 3000
 
-CMD ["pnpm", "dev"]
+CMD ["sh", "-c", "pnpm build && pnpm preview"]
