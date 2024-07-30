@@ -3,9 +3,7 @@
 
 If you have watched [How i met your mother](https://www.imdb.com/title/tt0460649/), you should have watched the slapsgiving episode.
 
-<video src="https://youtu.be/jq2e6VQOMPs?si=ItTYmgYPYfBeAG_Q" width="600" controls autoplay >
-Your browser doesn't support the video tag
-</video>
+<video src="https://youtu.be/jq2e6VQOMPs?si=ItTYmgYPYfBeAG_Q" width="600" controls autoplay />
 
 Try deploying with railways (web app only)
 [Watch the countdown?]()
