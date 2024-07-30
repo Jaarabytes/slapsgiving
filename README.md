@@ -1,14 +1,11 @@
-
 # Slapsgiving
 
 
-If you have watched [How i met your mother]() you should have watched the slapsgiving episode.
+If you have watched [How i met your mother](https://www.imdb.com/title/tt0460649/), you should have watched the slapsgiving episode.
 
-
-**Insert the how i met your mother video snippet here**
-
-
-Insert screenshot of countdown here
+<video src="https://youtu.be/jq2e6VQOMPs?si=ItTYmgYPYfBeAG_Q" width="600" controls autoplay >
+Your browser doesn't support the video tag
+</video>
 
 Try deploying with railways (web app only)
 [Watch the countdown?]()
@@ -20,8 +17,10 @@ This just counts down to the moment (Thanksgiving day)
 ### Installation
 
 Clone the repository    
+
 **PLEASE**, just use `pnpm` to install packages
-Run `npm run dev` and check your browser
+
+Run `pnpm run dev` and check your browser
 
 
 ### Contributions
@@ -34,8 +33,6 @@ Pull it:
 ```
 docker pull jaarabytes/slapsgiving:general
 ```
-
-
 
 ## Java Swing App
 
