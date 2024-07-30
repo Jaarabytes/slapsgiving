@@ -1,48 +1,64 @@
+import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
-//GUI component that countsdown days, hours, minutes and seconds to 2100 hours, thanksgiving
-//create a class that inherits all properties from frame
-public class SlapsGiving extends Frame {
-	//initialize variables
-	private Label lblCount;
-	private TextField txtCount;
-	private Button btnCount;
-	private int count = 0;
+public class Slapsgiving extends JFrame {
+    private JLabel countdownLabel;
 
-	//constructor to setup components and event handlers
-	public SlapsGiving () {
-	//components flow from left to right
-	setLayout(new FlowLayout());		
-	lblCount = new Label("Counter");
-	add(lblCount);
+    public Slapsgiving() {
+        setTitle("Slapsgiving Countdown");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setUndecorated(true); // Remove title bar
+        setExtendedState(JFrame.MAXIMIZED_BOTH); // Who doesn't like full screen
 
-	txtCount = new TextField(count + "" + 10);
-	txtCount.setEditable(false); //read-only
-	add(txtCount);
+        countdownLabel = new JLabel("", SwingConstants.CENTER);
+        countdownLabel.setFont(new Font("Serif", Font.BOLD, 48));
+        add(countdownLabel);
 
-	btnCount = new Button("Count");
-	add(btnCount);
+        Timer timer = new Timer(1000, e -> updateCountdown());
+        timer.start();
 
-	btnCount.addActionListener(new BtnCountListener());
+        updateCountdown();
+    }
 
-	setTitle("AWT counter");
-	setSize(300, 100);
+    private void updateCountdown() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDate today = now.toLocalDate();
+        LocalDate thanksgiving = LocalDate.of(today.getYear(), Month.NOVEMBER, getThanksgivingDay(today.getYear()));
 
+        LocalDateTime thanksgivingTime = LocalDateTime.of(thanksgiving, LocalTime.of(21, 0));
+        if (now.isAfter(thanksgivingTime)) {
+            thanksgivingTime = LocalDateTime.of(thanksgiving.plusYears(1), LocalTime.of(21, 0));
+        }
 
-	setVisible(true);
-	}
+        Duration duration = Duration.between(now, thanksgivingTime);
+        long days = duration.toDays();
+        duration = duration.minus(days, ChronoUnit.DAYS);
+        long hours = duration.toHours();
+        duration = duration.minus(hours, ChronoUnit.HOURS);
+        long minutes = duration.toMinutes();
+        duration = duration.minus(minutes, ChronoUnit.MINUTES);
+        long seconds = duration.getSeconds();
 
-	public static void main (String[] args) {
-	SlapsGiving app = new SlapsGiving();
-	}
+        String countdownText = String.format("Slapsgiving in %d days, %02d hours, %02d minutes, %02d seconds", days, hours, minutes, seconds);
+        countdownLabel.setText(countdownText);
+    }
 
-	//inner class that handles the Count button click;
-	private class BtnCountListener implements ActionListener {
-	@Override
-	public void actionPerformed (ActionEvent evt) {
-	++count; //pre-counts are better than post-counts
-	txtCount.setText(count + ""); //Convert int to String
-	}
-	}
+    private int getThanksgivingDay(int year) {
+        LocalDate novemberFirst = LocalDate.of(year, Month.NOVEMBER, 1);
+        int firstThursday = 4 - novemberFirst.getDayOfWeek().getValue();
+        if (firstThursday < 1) {
+            firstThursday += 7;
+        }
+        return firstThursday + 21; // 4th Thursday of November
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            Slapsgiving frame = new Slapsgiving();
+            frame.setVisible(true);
+        });
+    }
 }
