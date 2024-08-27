@@ -42,7 +42,7 @@ public class Slapsgiving extends JFrame {
         duration = duration.minus(minutes, ChronoUnit.MINUTES);
         long seconds = duration.getSeconds();
 
-        String countdownText = String.format("Slapsgiving in %d days, %02d hours, %02d minutes, %02d seconds", days, hours, minutes, seconds);
+        String countdownText = String.format("%d : %02d : %02d : %02d", days, hours, minutes, seconds);
         countdownLabel.setText(countdownText);
     }
 
